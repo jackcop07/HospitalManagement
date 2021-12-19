@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HospitalManagement.DataAccess.Common\HospitalManagement.DataAccess.Common.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Service.Common\HospitalManagement.Service.Common.csproj" />
+  </ItemGroup>
+
+</Project>

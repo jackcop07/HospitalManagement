@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HospitalManagement.DataAccess.Common\HospitalManagement.DataAccess.Common.csproj" />
+    <ProjectReference Include="..\HospitalManagement.DataAccess\HospitalManagement.DataAccess.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Data\HospitalManagement.Data.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Service.Common\HospitalManagement.Service.Common.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Service\HospitalManagement.Service.csproj" />
+  </ItemGroup>
+
+</Project>
