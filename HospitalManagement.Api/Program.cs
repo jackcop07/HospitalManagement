@@ -21,8 +21,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer("DatabaseConnection",
             providerOptions => providerOptions.EnableRetryOnFailure()));
 
+builder.Services.AddAutoMapper(typeof(HospitalManagement.Service.Common.Mappings.Mapper));
+
 builder.Services.AddScoped<IProductsService, ProductsService>();
-builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddTransient<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 var app = builder.Build();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using HospitalManagement.Data.Entities;
 using HospitalManagement.DataAccess.Common.Interfaces;
 using HospitalManagement.Service.Common.Dtos.Api;
@@ -14,11 +15,13 @@ namespace HospitalManagement.Service.Services
     public class ProductsService : IProductsService
     {
         private readonly IProductsRepository _productsRepository;
+        private readonly IMapper _mapper;
 
-        public ProductsService(IProductsRepository productsRepository)
+        public ProductsService(IProductsRepository productsRepository, IMapper mapper)
         {
             _productsRepository = productsRepository
-                ?? throw new ArgumentNullException(nameof(productsRepository));
+                                  ?? throw new ArgumentNullException(nameof(productsRepository));
+            _mapper = mapper;
         }
 
         public async Task<ApiResponse<IEnumerable<ProductToReturnDto>>> GetProductsAsync(string productName)
@@ -29,7 +32,7 @@ namespace HospitalManagement.Service.Services
             {
                 var productsFromRepo = await _productsRepository.GetAllProductsAsync(productName);
 
-                var mappedProducts = productsFromRepo.Select(productEntity => new ProductToReturnDto { Id = productEntity.Id, Name = productEntity.Name }).ToList();
+                var mappedProducts = _mapper.Map<IEnumerable<ProductToReturnDto>>(productsFromRepo);
 
                 response.Data = mappedProducts;
                 return response;
@@ -47,16 +50,12 @@ namespace HospitalManagement.Service.Services
 
             try
             {
-                var productFromRepo = await _productsRepository.GetProductByProductId(productId);
+                var productFromRepo = await _productsRepository.GetEntityByEntityId(productId);
 
                 if (productFromRepo is not null)
                 {
-                    var mappedProduct = new ProductToReturnDto
-                    {
-                        Id = productFromRepo.Id,
-                        Name = productFromRepo.Name
-                    };
-                    response.Data = mappedProduct;
+
+                    response.Data = _mapper.Map<ProductToReturnDto>(productFromRepo);
                 }
                 else
                 {
@@ -78,21 +77,11 @@ namespace HospitalManagement.Service.Services
 
             try
             {
-                var productToInsert = new ProductEntity
-                {
-                    Name = product.Name
-                };
+                var productToInsert = _mapper.Map<ProductEntity>(product);
 
-                await _productsRepository.InsertProductAsync(productToInsert);
+                await _productsRepository.InsertEntityAsync(productToInsert);
 
-                var productToReturn = new ProductToReturnDto
-                {
-                    Id = productToInsert.Id,
-                    Name = productToInsert.Name
-                };
-
-
-                response.Data = productToReturn;
+                response.Data = _mapper.Map<ProductToReturnDto>(productToInsert);
 
                 return response;
             }

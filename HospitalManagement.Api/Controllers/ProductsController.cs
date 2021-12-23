@@ -23,6 +23,8 @@ namespace HospitalManagement.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<ProductToReturnDto>))]
+        [ProducesResponseType(204)]
         public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts([FromQuery] string? productName)
         {
             var response = await _productsService.GetProductsAsync(productName);
@@ -41,6 +43,8 @@ namespace HospitalManagement.Api.Controllers
         }
 
         [HttpGet("{productId}", Name = "GetProductByProductId")]
+        [ProducesResponseType(200, Type = typeof(ProductToReturnDto))]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ProductToReturnDto>> GetProductById(int productId)
         {
             var response = await _productsService.GetProductByIdAsync(productId);
@@ -59,6 +63,7 @@ namespace HospitalManagement.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
         public async Task<ActionResult<ProductToReturnDto>> Post([FromBody] ProductToInsertDto product)
         {
             var result = await _productsService.InsertProductAsync(product);

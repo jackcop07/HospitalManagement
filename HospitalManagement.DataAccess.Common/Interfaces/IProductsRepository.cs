@@ -7,10 +7,9 @@ using HospitalManagement.Data.Entities;
 
 namespace HospitalManagement.DataAccess.Common.Interfaces
 {
-    public interface IProductsRepository
+    public interface IProductsRepository : IBaseRepository<ProductEntity>
     {
         Task<IEnumerable<ProductEntity>> GetAllProductsAsync(string productName);
-        Task<ProductEntity> GetProductByProductId(int productId);
-        Task InsertProductAsync(ProductEntity product);
+
     }
 }

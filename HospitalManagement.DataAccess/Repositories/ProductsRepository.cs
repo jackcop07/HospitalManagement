@@ -10,29 +10,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagement.DataAccess.Repositories
 {
-    public class ProductsRepository : IProductsRepository
+    public class ProductsRepository : BaseRepository<ProductEntity>, IProductsRepository
     {
-        private readonly ApplicationDbContext _context;
 
-        public ProductsRepository(ApplicationDbContext context)
+        public ProductsRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<IEnumerable<ProductEntity>> GetAllProductsAsync(string productName)
+        public async Task<IEnumerable<ProductEntity>> GetAllProductsAsync(string? productName)
         {
-            return _context.Products.ToList();
-        }
+            var collection = _context.Products as IQueryable<ProductEntity>;
 
-        public async Task<ProductEntity> GetProductByProductId(int productId)
-        {
-            return await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
-        }
+            if (string.IsNullOrWhiteSpace(productName)) return await collection.ToListAsync();
 
-        public async Task InsertProductAsync(ProductEntity product)
-        {
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            productName = productName.Trim();
+            collection = collection.Where(
+                c => c.Name.Contains(productName));
+
+
+            return await collection.ToListAsync();
         }
     }
 }
